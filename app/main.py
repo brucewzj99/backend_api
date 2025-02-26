@@ -3,14 +3,21 @@ from contextlib import asynccontextmanager
 
 from app.routers import user_router
 from app.utils.logger import log_request
-from app.utils.memory_db import load_data_into_memory, save_data_to_json
+
+# from app.utils.memory_db import load_data_into_memory
+from app.utils.memory_db_gcs import load_data_from_gcs
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+import os
+
+BUCKET_NAME = os.environ.get("GCS_BUCKET_NAME")
+OBJECT_NAME = os.environ.get("GCS_OBJECT_NAME", "users.json")
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    load_data_into_memory()
+    load_data_from_gcs(BUCKET_NAME, OBJECT_NAME)
+    # load_data_into_memory()
     yield
 
 

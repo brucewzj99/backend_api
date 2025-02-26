@@ -1,11 +1,17 @@
 from typing import List, Optional, Dict
 from ..models.user import CreateUserModel, UserModel
 from ..utils.memory_db import in_memory_db, save_data_to_json
+from ..utils.memory_db_gcs import in_memory_db, save_data_to_gcs
 
 
 class UserService:
-    def __init__(self, db: List[UserModel]):
+    # def __init__(self, db: List[UserModel]):
+    #     self.db = db
+
+    def __init__(self, db: List[UserModel], bucket_name: str, object_name: str):
         self.db = db
+        self.bucket_name = bucket_name
+        self.object_name = object_name
 
     # def get_all_users(self) -> List[UserModel]:
     #     return self.db
@@ -73,7 +79,8 @@ class UserService:
 
             # Add to database
             self.db.append(new_user)
-            save_data_to_json(self.db)
+            # save_data_to_json(self.db)
+            save_data_to_gcs(self.db, self.bucket_name, self.object_name)
 
             return new_user
         except Exception as e:
@@ -84,7 +91,7 @@ class UserService:
         for index, user in enumerate(self.db):
             if user.id == user_id:
                 self.db.pop(index)
-                save_data_to_json(self.db)
-
+                # save_data_to_json(self.db)
+                save_data_to_gcs(self.db, self.bucket_name, self.object_name)
                 return
         raise ValueError("User not found")
