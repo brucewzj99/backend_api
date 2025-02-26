@@ -1,0 +1,38 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Distribution / packaging
+build/
+dist/
+
+# Logs
+*.log
+*.log.*
+
+# IDE specific
+# PyCharm
+.idea/
+# VSCode
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+pytest_cache/
+
+# Environment variables
+.env
+.env.*
